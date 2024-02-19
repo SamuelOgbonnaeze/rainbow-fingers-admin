@@ -9,7 +9,6 @@ import { useParams, useRouter } from "next/navigation";
 
 import { Billboard } from "@prisma/client"
 import { Trash } from "lucide-react";
-import { useOrigin } from "@/hooks/use-origin"
 
 import { AlertModal } from "@/components/modals/alert-modal";
 import { Heading } from "@/components/ui/heading";
@@ -41,7 +40,6 @@ interface BillboardFormProps {
 export const BillboardForm: React.FC<BillboardFormProps> = ({ initialData }) => {
     const params = useParams()
     const router = useRouter()
-    const origin = useOrigin()
 
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false)
@@ -67,10 +65,9 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({ initialData }) => 
             }else{
                 await axios.post(`/api/${params.storeId}/billboards`, data)
             }
-           
-            router.refresh();
-            router.push(`/${params.storeId}/billboards`)
             toast.success(toastMessage)
+            router.push(`/${params.storeId}/billboards`)
+            router.refresh();
         } catch (error) {
             toast.error("Something went wrong")
         } finally {
@@ -82,9 +79,9 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({ initialData }) => 
         try {
             setLoading(true)
             await axios.delete(`/api/${params.storeId}/billboards/${params.billboardId}`)
+            router.push(`/${params.storeId}/billboards`)
             toast.success('Billboard deleted')
             router.refresh()
-            router.push("/")
         } catch (error) {
             toast.error("Make sure you removed all categories using this billboard first")
         } finally {
@@ -160,8 +157,6 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({ initialData }) => 
                     </Button>
                 </form>
             </Form>
-            <Separator />
-
         </>
     )
 }
