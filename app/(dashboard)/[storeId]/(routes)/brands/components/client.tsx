@@ -9,14 +9,14 @@ import { Separator } from "@/components/ui/separator";
 import { DataTable } from "@/components/ui/data-table";
 import { ApiList } from "@/components/ui/api-list";
 
-import { SizeColumn, columns } from "./columns";
+import { BrandColumn, columns } from "./columns";
 
 
-interface SizeClientProps {
-    data: SizeColumn[]
+interface BrandClientProps {
+    data: BrandColumn[]
 }
 
-export const SizeClient: React.FC<SizeClientProps> = ({
+export const BrandClient: React.FC<BrandClientProps> = ({
     data
 }) => {
     const router = useRouter();
@@ -26,19 +26,19 @@ export const SizeClient: React.FC<SizeClientProps> = ({
         <>
             <div className="flex items-center justify-between">
                 <Heading
-                    title={`Sizes (${data.length})`}
-                    description="Manage store sizes"
+                    title={`Brands (${data.length})`}
+                    description="Manage store brands"
                 />
-                <Button onClick={() => router.push(`/${params.storeId}/sizes/new`)}>
+                <Button onClick={() => router.push(`/${params.storeId}/brands/new`)}>
                     <Plus className=" mr-2 h-4 w-4" />
                     Add New
                 </Button>
             </div>
             <Separator />
             <DataTable columns={columns} data={data} searchKey="name" />
-            <Heading title="API" description="Api calls for sizeboards" />
+            <Heading title="API" description="Api calls for Brands" />
             <Separator />
-            <ApiList entityName="sizes" entityIdName="sizeId" />
+            <ApiList entityName="brands" entityIdName="brandId" />
         </>
     );
 }

@@ -5,31 +5,31 @@ import prismadb from "@/lib/prismadb";
 
 export async function GET(
     req: Request,
-    { params }: { params: {  sizeId: string } }
+    { params }: { params: {  brandId: string } }
 ) {
     try {
 
-        if (!params.sizeId) {
-            return new NextResponse("Size id is required", { status: 400 })
+        if (!params.brandId) {
+            return new NextResponse("Brand id is required", { status: 400 })
         }
 
-        const size = await prismadb.size.findUnique({
+        const brand = await prismadb.brand.findUnique({
             where: {
-                id: params.sizeId,
+                id: params.brandId,
             }
         })
 
-        return NextResponse.json(size)
+        return NextResponse.json(brand)
 
     } catch (error) {
-        console.log("[SIZE_GET]", error)
+        console.log("[BRAND_GET]", error)
         return new NextResponse("Internal error", { status: 500 })
     }
 }
 
 export async function PATCH(
     req: Request,
-    { params }: { params: { storeId: string, sizeId: string } }
+    { params }: { params: { storeId: string, brandId: string } }
 ) {
     try {
         const { userId } = auth();
@@ -49,8 +49,8 @@ export async function PATCH(
             return new NextResponse("Value is required", { status: 400 })
         }
 
-        if (!params.sizeId) {
-            return new NextResponse("Size id is required", { status: 400 })
+        if (!params.brandId) {
+            return new NextResponse("Brand id is required", { status: 400 })
         }
 
         const storeByUserId = await prismadb.store.findFirst({
@@ -64,9 +64,9 @@ export async function PATCH(
             return new NextResponse("Unauthorized", { status: 403 })
         }
 
-        const size = await prismadb.size.updateMany({
+        const brand = await prismadb.brand.updateMany({
             where: {
-                id: params.sizeId,
+                id: params.brandId,
 
             },
             data: {
@@ -75,17 +75,17 @@ export async function PATCH(
             }
         })
 
-        return NextResponse.json(size)
+        return NextResponse.json(brand)
 
     } catch (error) {
-        console.log("[SIZE_PATCH]", error)
+        console.log("[BRAND_PATCH]", error)
         return new NextResponse("Internal error", { status: 500 })
     }
 }
 
 export async function DELETE(
     req: Request,
-    { params }: { params: { storeId: string, sizeId: string } }
+    { params }: { params: { storeId: string, brandId: string } }
 ) {
     try {
         const { userId } = auth();
@@ -95,8 +95,8 @@ export async function DELETE(
         }
 
 
-        if (!params.sizeId) {
-            return new NextResponse("Size id is required", { status: 400 })
+        if (!params.brandId) {
+            return new NextResponse("Brand id is required", { status: 400 })
         }
 
         const storeByUserId = await prismadb.store.findFirst({
@@ -110,16 +110,16 @@ export async function DELETE(
             return new NextResponse("Unauthorized", { status: 403 })
         }
 
-        const size = await prismadb.size.deleteMany({
+        const brand = await prismadb.brand.deleteMany({
             where: {
-                id: params.sizeId,
+                id: params.brandId,
             }
         })
 
-        return NextResponse.json(size)
+        return NextResponse.json(brand)
 
     } catch (error) {
-        console.log("[SIZE_DELETE]", error)
+        console.log("[BRAND_DELETE]", error)
         return new NextResponse("Internal error", { status: 500 })
     }
 }

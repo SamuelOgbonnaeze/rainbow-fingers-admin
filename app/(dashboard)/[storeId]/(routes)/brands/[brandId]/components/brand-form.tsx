@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useParams, useRouter } from "next/navigation";
 
-import { Size } from "@prisma/client"
+import { Brand } from "@prisma/client"
 import { Trash } from "lucide-react";
 
 import { AlertModal } from "@/components/modals/alert-modal";
@@ -30,26 +30,26 @@ const formSchema = z.object({
     value: z.string().min(1)
 })
 
-type SizeFormValues = z.infer<typeof formSchema>
+type BrandFormValues = z.infer<typeof formSchema>
 
-interface SizeFormProps {
-    initialData: Size | null;
+interface BrandFormProps {
+    initialData: Brand | null;
 }
 
 
-export const SizeForm: React.FC<SizeFormProps> = ({ initialData }) => {
+export const BrandForm: React.FC<BrandFormProps> = ({ initialData }) => {
     const params = useParams()
     const router = useRouter()
 
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false)
 
-    const title = initialData ? "Edit your size" : "Create a size";
-    const description = initialData ? "Make changes to your size" : "Add a new size";
-    const toastMessage = initialData ? "Size updated." : "Size created.";
+    const title = initialData ? "Edit your brand" : "Create a brand";
+    const description = initialData ? "Make changes to your brand" : "Add a new brand";
+    const toastMessage = initialData ? "Brand updated." : "Brand created.";
     const action = initialData ? "Save changes" : "Create";
 
-    const form = useForm<SizeFormValues>({
+    const form = useForm<BrandFormValues>({
         resolver: zodResolver(formSchema),
         defaultValues: initialData || {
             name: "",
@@ -57,16 +57,16 @@ export const SizeForm: React.FC<SizeFormProps> = ({ initialData }) => {
         }
     });
 
-    const onSubmit = async (data: SizeFormValues) => {
+    const onSubmit = async (data: BrandFormValues) => {
         try {
             setLoading(true);
             if (initialData) {
-                await axios.patch(`/api/${params.storeId}/sizes/${params.sizeId}`, data)
+                await axios.patch(`/api/${params.storeId}/brands/${params.brandId}`, data)
             } else {
-                await axios.post(`/api/${params.storeId}/sizes`, data)
+                await axios.post(`/api/${params.storeId}/brands`, data)
             }
             toast.success(toastMessage)
-            router.push(`/${params.storeId}/sizes`)
+            router.push(`/${params.storeId}/brands`)
             router.refresh();
         } catch (error) {
             toast.error("Something went wrong")
@@ -78,12 +78,12 @@ export const SizeForm: React.FC<SizeFormProps> = ({ initialData }) => {
     const onDelete = async () => {
         try {
             setLoading(true)
-            await axios.delete(`/api/${params.storeId}/sizes/${params.sizeId}`)
-            router.push(`/${params.storeId}/sizes`)
-            toast.success('Size deleted')
+            await axios.delete(`/api/${params.storeId}/brands/${params.brandId}`)
+            router.push(`/${params.storeId}/brands`)
+            toast.success('Brand deleted')
             router.refresh()
         } catch (error) {
-            toast.error("Make sure you removed all products using this size first")
+            toast.error("Make sure you removed all products using this brand first")
         } finally {
             setOpen(false)
             setLoading(false)
@@ -127,7 +127,7 @@ export const SizeForm: React.FC<SizeFormProps> = ({ initialData }) => {
                                 <FormItem>
                                     <FormLabel>Name</FormLabel>
                                     <FormControl>
-                                        <Input disabled={loading} placeholder="Size name" {...field} />
+                                        <Input disabled={loading} placeholder="Brand name" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -141,7 +141,7 @@ export const SizeForm: React.FC<SizeFormProps> = ({ initialData }) => {
                                 <FormItem>
                                     <FormLabel>Value</FormLabel>
                                     <FormControl>
-                                        <Input disabled={loading} placeholder="Size value" {...field} />
+                                        <Input disabled={loading} placeholder="Brand value" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
