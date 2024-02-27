@@ -20,7 +20,7 @@ model Store {
   colors     Color[]     @relation("StoreToColor")
   brands     Brand[]     @relation("StoreToBrand")
   products   Product[]   @relation("StoreToProduct")
-  orders Order[] @relation("StoreToOrder")
+  orders     Order[]     @relation("StoreToOrder")
   createdAt  DateTime    @default(now())
   updatedAt  DateTime    @updatedAt
 }
@@ -93,25 +93,25 @@ model Brand {
 }
 
 model Product {
-  id         String   @id @default(uuid())
+  id         String      @id @default(uuid())
   storeId    String
-  store      Store    @relation("StoreToProduct", fields: [storeId], references: [id])
+  store      Store       @relation("StoreToProduct", fields: [storeId], references: [id])
   categoryId String
-  category   Category @relation("CategoryToProduct", fields: [categoryId], references: [id])
+  category   Category    @relation("CategoryToProduct", fields: [categoryId], references: [id])
   name       String
   price      Decimal
   orderItems OrderItem[]
-  isFeatured Boolean  @default(false)
-  isArchived Boolean  @default(false)
+  isFeatured Boolean     @default(false)
+  isArchived Boolean     @default(false)
   sizeId     String
-  size       Size     @relation(fields: [sizeId], references: [id])
+  size       Size        @relation(fields: [sizeId], references: [id])
   colorId    String
-  color      Color    @relation(fields: [colorId], references: [id])
+  color      Color       @relation(fields: [colorId], references: [id])
   brandId    String
-  brand      Brand    @relation(fields: [brandId], references: [id])
+  brand      Brand       @relation(fields: [brandId], references: [id])
   images     Image[]
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
 
   @@index([storeId])
   @@index([categoryId])
@@ -131,29 +131,27 @@ model Image {
   @@index([productId])
 }
 
-model Order{
-  id String @id @default(uuid())
-  storeId String
-  store Store @relation("StoreToOrder",fields: [storeId], references: [id])
+model Order {
+  id         String      @id @default(uuid())
+  storeId    String
+  store      Store       @relation("StoreToOrder", fields: [storeId], references: [id])
   orderItems OrderItem[]
-  isPaid Boolean @default(false)
-  phone String @default("")
-  address String @default("")
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  isPaid     Boolean     @default(false)
+  phone      String      @default("")
+  address    String      @default("")
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
 
   @@index([storeId])
 }
 
-model OrderItem{
-  id String @id @default(uuid())
-  orderId String
-  order Order @relation( fields: [orderId], references: [id])
+model OrderItem {
+  id        String  @id @default(uuid())
+  orderId   String
+  order     Order   @relation(fields: [orderId], references: [id])
   productId String
-  product Product @relation( fields: [productId], references: [id])
+  product   Product @relation(fields: [productId], references: [id])
 
   @@index([orderId])
   @@index([productId])
-
-
 }
