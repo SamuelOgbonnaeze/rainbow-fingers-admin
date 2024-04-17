@@ -138,7 +138,7 @@ model Order {
   orderItems OrderItem[]
   isPaid     Boolean     @default(false)
   phone      String      @default("")
-  address    String      @default("")
+  fullname    String      @default("")
   createdAt  DateTime    @default(now())
   updatedAt  DateTime    @updatedAt
 

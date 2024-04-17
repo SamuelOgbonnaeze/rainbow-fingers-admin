@@ -38,6 +38,7 @@ const OrdersPage = async (
         createdAt: format(item.createdAt, "MMMM do, yyyy")
     }));
 
+    // console.log(formattedOrders)
 
     return (
         <div className='flex-col'>
