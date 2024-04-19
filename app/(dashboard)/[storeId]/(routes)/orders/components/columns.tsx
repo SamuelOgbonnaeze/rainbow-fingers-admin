@@ -6,7 +6,7 @@ import { ColumnDef } from "@tanstack/react-table"
 export type OrderColumn = {
   id: string
   phone: string
-  address: string
+  name: string
   isPaid: boolean
   totalPrice: string
   products: string
@@ -24,8 +24,8 @@ export const columns: ColumnDef<OrderColumn>[] = [
     header: "Phone",
   },
   {
-    accessorKey: "address",
-    header: "Address",
+    accessorKey: "name",
+    header: "Name",
   },
   {
     accessorKey: "totalPrice",

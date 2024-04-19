@@ -17,8 +17,7 @@ interface OrderClientProps {
 export const OrderClient: React.FC<OrderClientProps> = ({
     data
 }) => {
-    const router = useRouter();
-    const params = useParams()
+    
 
     return (
         <>
