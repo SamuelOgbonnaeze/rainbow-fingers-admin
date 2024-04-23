@@ -30,8 +30,8 @@ const graphRevenue= await getGraphRevenue(params.storeId)
             <div className="flex-1 space-y-4 p-8 pt-6">
                 <Heading title="Rainbow Fingers" description="An overview of your store" />
                 <Separator />
-                <div className="grid gap-4 grid-cols-3">
-                    <Card>
+                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                    <Card className="">
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 ">
                             <CardTitle className="text-sm font-medium">
                                 Total Revenue
@@ -39,7 +39,7 @@ const graphRevenue= await getGraphRevenue(params.storeId)
                             <Banknote className="w-5 h-5 text-muted-foreground" />
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold">
+                            <div className="md:text-2xl font-bold">
                                 {formatter.format(totalRevenue)}
                             </div>
                         </CardContent>
@@ -53,7 +53,7 @@ const graphRevenue= await getGraphRevenue(params.storeId)
                             <CreditCard className="w-5 h-5 text-muted-foreground" />
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold">
+                            <div className="md:text-2xl font-bold">
                                 +{salesCount}
                             </div>
                         </CardContent>
@@ -67,7 +67,7 @@ const graphRevenue= await getGraphRevenue(params.storeId)
                             <Package className="w-5 h-5 text-muted-foreground" />
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold">
+                            <div className="md:text-2xl font-bold">
                                 {stockCount}
                             </div>
                         </CardContent>
