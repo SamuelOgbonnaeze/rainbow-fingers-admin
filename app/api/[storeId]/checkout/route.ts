@@ -19,9 +19,6 @@ export async function POST(
 ) {
     const { productIds, phonenumber, fullname } = await req.json();
 
-    console.log(phonenumber);
-    console.log(productIds);
-    console.log(fullname);
 
     if (!productIds || productIds.length === 0) {
         return new NextResponse("Product ids are required", { status: 400 });

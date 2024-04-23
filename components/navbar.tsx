@@ -30,7 +30,7 @@ const Navbar = async () => {
                         src={logo}
                         alt="Rainbow Fingers"
                         width={80}
-                        height={60}
+                        height={80}
                     />
                     <StoreSwitcher items={stores} />
                 </div>
