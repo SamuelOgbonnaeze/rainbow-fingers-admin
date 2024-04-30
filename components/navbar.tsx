@@ -8,6 +8,8 @@ import logo from "@/public/images/logo.png";
 import { redirect } from "next/navigation";
 import prismadb from "@/lib/prismadb";
 import { ModeToggle } from "./mode-toggle";
+import MobileNav from "./mobile-nav";
+
 
 const Navbar = async () => {
     const { userId } = auth()
@@ -16,8 +18,8 @@ const Navbar = async () => {
         redirect("/sign-in")
     }
 
-    const stores= await prismadb.store.findMany({
-        where:{
+    const stores = await prismadb.store.findMany({
+        where: {
             userId
         }
     })
@@ -34,10 +36,16 @@ const Navbar = async () => {
                     />
                     <StoreSwitcher items={stores} />
                 </div>
-                <MainNav className="mx-6" />
-                <div className="ml-auto flex items-center space-x-4">
-                    <ModeToggle />
-                    <UserButton afterSignOutUrl="/" />
+                {/* Mobile Navbar */}
+                <MobileNav className="ml-auto py-2 px-4 md:px-6  flex lg:hidden" />
+
+                {/* Desktop Navbar */}
+                <div className="w-full hidden lg:flex">
+                    <MainNav className="mx-6" />
+                    <div className="ml-auto flex items-center space-x-4">
+                        <ModeToggle />
+                        <UserButton afterSignOutUrl="/" />
+                    </div>
                 </div>
             </div>
         </div>
