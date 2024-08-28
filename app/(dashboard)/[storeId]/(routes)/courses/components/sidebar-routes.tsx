@@ -1,24 +1,27 @@
 "use client"
 
-import { usePathname } from "next/navigation";
+import { useParams } from "next/navigation";
 import { SidebarItem } from "./sidebar-item"
 import Lucide from 'lucide-react';
 
 
+export const SidebarRoutes = () => {
+
+   const params= useParams()
+const id = `${params.storeId}`
+   
 const Routes = [
     {
         icon: "List",
         label: "Courses",
-        href: "/courses/list",
+        href: `/${id}/courses/list`,
     },
     {
         icon: "BarChart",
         label: "Analytics",
-        href: "/courses/analytics",
+        href: `/${id}/courses/analytics`,
     },
 ]
-
-export const SidebarRoutes = () => {
 
     const routes = Routes 
     return (
@@ -29,6 +32,7 @@ export const SidebarRoutes = () => {
                     icon={route.icon as keyof typeof Lucide.icons}
                     label={route.label}
                     href={route.href}
+                    storeId={id}
                 />
             ))}
         </div>

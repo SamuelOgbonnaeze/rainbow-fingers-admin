@@ -1,28 +1,29 @@
-"use client"
+"use client";
 
 import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
-import Icon, { IconNames } from "./icon"; // Import Icon and IconNames
+import Icon, { IconNames } from "./icon";
 
 interface SidebarItemProps {
     icon: IconNames; // Restrict icon prop to valid Lucide icon names
     label: string;
     href: string;
+    storeId: string; // Include storeId in SidebarItemProps
 }
 
-export const SidebarItem = ({ icon, label, href }: SidebarItemProps) => {
+export const SidebarItem = ({ icon, label, href, storeId }: SidebarItemProps) => {
     const pathname = usePathname();
     const router = useRouter();
 
     const isActive =
-        (pathname === "/" && href === "/") ||
+        (pathname === `/${storeId}/courses` && href === `/${storeId}/courses`) ||
         pathname === href ||
-        pathname?.startsWith(`${href}/`);
+        pathname?.startsWith(`/${storeId}/${href}/`);
 
     const onClick = () => {
         router.push(href);
     };
- 
+
     return (
         <button
             onClick={onClick}
@@ -40,12 +41,12 @@ export const SidebarItem = ({ icon, label, href }: SidebarItemProps) => {
                 />
                 {label}
             </div>
-            <div className={cn(
-                "ml-auto opacity-0 border-2 border-sky-700 h-full transition-all", 
-                isActive && "opacity-100"
-            )}>
-
-            </div>
+            <div
+                className={cn(
+                    "ml-auto opacity-0 border-2 border-sky-700 h-full transition-all",
+                    isActive && "opacity-100"
+                )}
+            ></div>
         </button>
     );
 };
