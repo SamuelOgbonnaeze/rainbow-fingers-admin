@@ -18,7 +18,7 @@ export const SidebarItem = ({ icon, label, href, storeId }: SidebarItemProps) =>
     const isActive =
         (pathname === `/${storeId}/courses` && href === `/${storeId}/courses`) ||
         pathname === href ||
-        pathname?.startsWith(`/${storeId}/${href}/`);
+        pathname?.startsWith(`${href}/`);
 
     const onClick = () => {
         router.push(href);

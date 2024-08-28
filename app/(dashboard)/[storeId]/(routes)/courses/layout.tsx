@@ -15,7 +15,7 @@ export default async function CoursesLayout({
                     <SidebarRoutes />
                 </div>
             </div>
-            <div>
+            <div className="w-full">
                 {children}
             </div>
 
