@@ -21,6 +21,7 @@ model Store {
   brands     Brand[]     @relation("StoreToBrand")
   products   Product[]   @relation("StoreToProduct")
   orders     Order[]     @relation("StoreToOrder")
+  courses    Course[]    @relation("StoreToCourse")
   createdAt  DateTime    @default(now())
   updatedAt  DateTime    @updatedAt
 }
@@ -138,7 +139,7 @@ model Order {
   orderItems OrderItem[]
   isPaid     Boolean     @default(false)
   phone      String      @default("")
-  name    String      @default("")
+  name       String      @default("")
   createdAt  DateTime    @default(now())
   updatedAt  DateTime    @updatedAt
 
@@ -154,4 +155,45 @@ model OrderItem {
 
   @@index([orderId])
   @@index([productId])
+}
+
+model Course {
+  id          String  @id @default(uuid())
+  userId      String
+  storeId     String
+  store       Store   @relation("StoreToCourse", fields: [storeId], references: [id])
+  title       String
+  description String?
+  imageUrl    String?
+  price       Float?
+  isPublished Boolean @default(false)
+
+  courseCategoryId String?
+  courseCategory CourseCategory? @relation(fields:[courseCategoryId], references: [id])
+
+  attachments Attachment[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([courseCategoryId])
+}
+
+model CourseCategory{
+  id          String  @id @default(uuid())
+  name String @unique
+  courses Course[]
+}
+
+model Attachment {
+  id   String @id @default(uuid())
+  name String
+  url  String
+  courseId String
+  course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([courseId])
 }

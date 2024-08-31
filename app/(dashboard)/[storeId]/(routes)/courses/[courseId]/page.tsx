@@ -1,55 +1,68 @@
+import { IconBadge } from "@/components/icon-badge";
 import prismadb from "@/lib/prismadb";
-import { ProductForm } from "./components/product-form";
+import { auth } from "@clerk/nextjs";
+import { LayoutList } from "lucide-react";
+import { redirect } from "next/navigation";
 
-const ProductPage = async (
-    { params }: { params: { productId: string, storeId: string } }
+const CourseIdPage = async (
+    { params }: { params: { storeId: string, courseId: string } }
 ) => {
-    const product = await prismadb.product.findUnique({
+
+    const { userId } = auth();
+
+    if (!userId) {
+        return redirect(`/${params.storeId}/courses`)
+    }
+
+    const course = await prismadb.course.findUnique({
         where: {
-            id: params.productId,
-        },
-        include: {
-            images: true,
+            id: params.courseId,
+            storeId: params.storeId,
+            userId,
         }
     })
 
-    const categories = await prismadb.category.findMany({
-        where: {
-            storeId: params.storeId
-        }
-    })
+    if (!course) {
+        return redirect(`/${params.storeId}/courses`)
+    }
 
-    const sizes = await prismadb.size.findMany({
-        where: {
-            storeId: params.storeId
-        }
-    })
+    const requiredFields = [
+        course.title,
+        course.description,
+        course.imageUrl,
+        course.price,
+        course.courseCategoryId,
+    ]
 
-    const brands = await prismadb.brand.findMany({
-        where: {
-            storeId: params.storeId
-        }
-    })
-    const colors = await prismadb.color.findMany({
-        where: {
-            storeId: params.storeId
-        }
-    })
-
+    const totalFields = requiredFields.length;
+    const completedFields = requiredFields.filter(Boolean).length;
+    const completionText = `(${completedFields}/${totalFields})`
 
     return (
-        <div className="flex-col">
-            <div className="flex-1 space-y-4 p-8 pt-6">
-                <ProductForm
-                    categories={categories}
-                    sizes={sizes}
-                    brands={brands}
-                    colors={colors}
-                    initialData={product}
-                />
+        <div className="p-6">
+            <div className="flex items-center justify-between">
+                <div className="flex flex-col gap-y-2">
+                    <h1 className="text-2xl font-medium">
+                        Course Setup
+                    </h1>
+                    <span className="text-sm text-slate-700">
+                        Complete all fields {completionText}
+                    </span>
+                </div>
+            </div>
+            <div className="grid grid-cols.1 md:grid-cols-2 gap-6 mt-16">
+                <div>
+                    <div className="flex items-center gap-x-2">
+                        <IconBadge size="sm" variant="default" icon={LayoutList} />
+                        <h1 className="text-xl">
+                            Customize your course
+                        </h1>
+                    </div>
+                </div>
+
             </div>
         </div>
     );
 }
 
-export default ProductPage;
+export default CourseIdPage;
