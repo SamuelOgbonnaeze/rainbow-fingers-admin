@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 import TitleForm from "./_components/title-form";
 import DescriptionForm from "./_components/description-form";
 import ImageForm from "./_components/image-form";
+import CourseCategoryForm from "./_components/course-category-form";
 
 const CourseIdPage = async (
     { params }: { params: { storeId: string, courseId: string } }
@@ -28,6 +29,14 @@ const CourseIdPage = async (
     if (!course) {
         return redirect(`/${params.storeId}/courses`)
     }
+
+    const courseCategories= await prismadb.courseCategory.findMany({
+        orderBy:{
+            name: "asc"
+        }
+    })
+
+   
 
     const requiredFields = [
         course.title,
@@ -64,6 +73,12 @@ const CourseIdPage = async (
                     <TitleForm initialData= {course} courseId= {course.id} />
                         <DescriptionForm initialData={course} courseId={course.id} />
                         <ImageForm initialData={course} courseId={course.id} />
+                        <CourseCategoryForm initialData={course} courseId={course.id}
+                            options={courseCategories.map((courseCategory) => ({
+                                label:courseCategory?.name,
+                                value:courseCategory?.id
+                            }))}
+                        />
                 </div>
 
             </div>
