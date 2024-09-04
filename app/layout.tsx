@@ -7,6 +7,10 @@ import "./globals.css";
 import { ModalProvider } from "@/providers/modal-provider";
 import { ToasterProvider } from "@/providers/toast-provider";
 import { ThemeProvider } from "@/components/theme-provider";
+import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
+import { extractRouterConfig } from "uploadthing/server";
+import { ourFileRouter } from "./api/uploadthing/core";
+
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -33,6 +37,9 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
+            <NextSSRPlugin 
+              routerConfig={extractRouterConfig(ourFileRouter)}
+            />
           <ToasterProvider />
           <ModalProvider />
           {children}

@@ -19,6 +19,7 @@ import axios from "axios"
 import { useParams, useRouter } from "next/navigation"
 import { Textarea } from "@/components/ui/textarea"
 import { cn } from "@/lib/utils"
+import { Course } from "@prisma/client"
 
 const formSchema = z.object({
     description: z.string().min(2, {
@@ -27,9 +28,7 @@ const formSchema = z.object({
 })
 
 interface DescriptionFormProps {
-    initialData: {
-        description: string | null;
-    }
+    initialData: Course;
     courseId: string;
 }
 

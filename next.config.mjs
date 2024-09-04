@@ -2,11 +2,10 @@
 const nextConfig = {
     images: {
         domains: [
-            "res.cloudinary.com"
+            "res.cloudinary.com",
+            "utfs.io"
         ]
     }
-
 };
-
 
 export default nextConfig;
