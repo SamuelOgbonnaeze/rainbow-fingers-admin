@@ -1,12 +1,13 @@
 import { IconBadge } from "@/components/icon-badge";
 import prismadb from "@/lib/prismadb";
 import { auth } from "@clerk/nextjs";
-import { LayoutList } from "lucide-react";
+import { CircleDollarSign, LayoutList, ListChecks } from "lucide-react";
 import { redirect } from "next/navigation";
 import TitleForm from "./_components/title-form";
 import DescriptionForm from "./_components/description-form";
 import ImageForm from "./_components/image-form";
 import CourseCategoryForm from "./_components/course-category-form";
+import PriceForm from "./_components/price-form";
 
 const CourseIdPage = async (
     { params }: { params: { storeId: string, courseId: string } }
@@ -30,13 +31,13 @@ const CourseIdPage = async (
         return redirect(`/${params.storeId}/courses`)
     }
 
-    const courseCategories= await prismadb.courseCategory.findMany({
-        orderBy:{
+    const courseCategories = await prismadb.courseCategory.findMany({
+        orderBy: {
             name: "asc"
         }
     })
 
-   
+
 
     const requiredFields = [
         course.title,
@@ -70,15 +71,36 @@ const CourseIdPage = async (
                             Customize your course
                         </h1>
                     </div>
-                    <TitleForm initialData= {course} courseId= {course.id} />
-                        <DescriptionForm initialData={course} courseId={course.id} />
-                        <ImageForm initialData={course} courseId={course.id} />
-                        <CourseCategoryForm initialData={course} courseId={course.id}
-                            options={courseCategories.map((courseCategory) => ({
-                                label:courseCategory?.name,
-                                value:courseCategory?.id
-                            }))}
-                        />
+                    <TitleForm initialData={course} courseId={course.id} />
+                    <DescriptionForm initialData={course} courseId={course.id} />
+                    <ImageForm initialData={course} courseId={course.id} />
+                    <CourseCategoryForm initialData={course} courseId={course.id}
+                        options={courseCategories.map((courseCategory) => ({
+                            label: courseCategory?.name,
+                            value: courseCategory?.id
+                        }))}
+                    />
+                </div>
+                <div className="space-y-6">
+                    <div>
+                        <div className="flex items-center gap-x-2">
+                            <IconBadge size="sm" variant="default" icon={ListChecks} />
+                            <h1 className="text-xl">
+                                Course chaptersh
+                            </h1>
+                        </div>
+                        <div>TODO: CAPTERS</div>
+                    </div>
+                    <div>
+                        <div className="flex items-center gap-x-2">
+                        <IconBadge size="sm" variant="default" icon={CircleDollarSign} />
+                            <h1 className="text-xl">
+                                Sell your course
+                            </h1>
+                        </div>
+                        <PriceForm initialData={course} courseId={course.id} />
+                    </div>
+
                 </div>
 
             </div>
