@@ -9,6 +9,7 @@ import ImageForm from "./_components/image-form";
 import CourseCategoryForm from "./_components/course-category-form";
 import PriceForm from "./_components/price-form";
 import AttachmentForm from "./_components/attachment-form";
+import ChaptersForm from "./_components/chapters-form";
 
 const CourseIdPage = async (
     { params }: { params: { storeId: string, courseId: string } }
@@ -30,6 +31,11 @@ const CourseIdPage = async (
             attachments:{
                 orderBy:{
                     createdAt: "desc"
+                }
+            },
+            chapters:{
+                orderBy: {
+                    position:"desc"
                 }
             }
         }
@@ -53,6 +59,7 @@ const CourseIdPage = async (
         course.imageUrl,
         course.price,
         course.courseCategoryId,
+        course.chapters.some(chapter=> chapter.isPublished),
     ]
 
     const totalFields = requiredFields.length;
@@ -94,10 +101,10 @@ const CourseIdPage = async (
                         <div className="flex items-center gap-x-2">
                             <IconBadge size="sm" variant="default" icon={ListChecks} />
                             <h1 className="text-xl">
-                                Course chaptersh
+                                Course chapters
                             </h1>
                         </div>
-                        <div>TODO: CAPTERS</div>
+                        <ChaptersForm initialData={course} courseId={course.id} />
                     </div>
                     <div>
                         <div className="flex items-center gap-x-2">
