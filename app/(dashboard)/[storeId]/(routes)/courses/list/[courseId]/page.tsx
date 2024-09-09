@@ -1,13 +1,14 @@
 import { IconBadge } from "@/components/icon-badge";
 import prismadb from "@/lib/prismadb";
 import { auth } from "@clerk/nextjs";
-import { CircleDollarSign, LayoutList, ListChecks } from "lucide-react";
+import { CircleDollarSign, File, LayoutList, ListChecks } from "lucide-react";
 import { redirect } from "next/navigation";
 import TitleForm from "./_components/title-form";
 import DescriptionForm from "./_components/description-form";
 import ImageForm from "./_components/image-form";
 import CourseCategoryForm from "./_components/course-category-form";
 import PriceForm from "./_components/price-form";
+import AttachmentForm from "./_components/attachment-form";
 
 const CourseIdPage = async (
     { params }: { params: { storeId: string, courseId: string } }
@@ -24,6 +25,13 @@ const CourseIdPage = async (
             id: params.courseId,
             storeId: params.storeId,
             userId,
+        },
+        include:{
+            attachments:{
+                orderBy:{
+                    createdAt: "desc"
+                }
+            }
         }
     })
 
@@ -99,6 +107,15 @@ const CourseIdPage = async (
                             </h1>
                         </div>
                         <PriceForm initialData={course} courseId={course.id} />
+                    </div>
+                    <div> 
+                        <div className="flex items-center gap-x-2">
+                        <IconBadge size="sm" variant="default" icon={File} />
+                            <h1 className="text-xl">
+                                Resources & Attachments
+                            </h1>
+                        </div>
+                        <AttachmentForm initialData={course} courseId={course.id} />
                     </div>
 
                 </div>
