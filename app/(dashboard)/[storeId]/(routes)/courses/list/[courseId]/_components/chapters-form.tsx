@@ -14,6 +14,7 @@ import { Loader2, PlusCircle } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { ChaptersList } from "./chapters-list";
 
 
 
@@ -45,7 +46,6 @@ const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
-            console.log("Submitting values:", values); 
             await axios.post(`/api/${params.storeId}/courses/${courseId}/chapters`, values)
             toast.success("Chapter created")
             toggleCreating();
@@ -56,11 +56,10 @@ const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
     }
 
     const onReorder = async (updateData: { id: string; position: number }[]) => {
-        try {
-            console.log("Submitting values:", updateData);
+        try { 
             setIsUpdating(true);
 
-            await axios.put(`/api/courses/${courseId}/chapters/reorder`, {
+            await axios.put(`/api/${params.storeId}/courses/${courseId}/chapters/reorder`, {
                 list: updateData
             })
             toast.success("Chapters reordered")
@@ -73,7 +72,7 @@ const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
     }
 
     const onEdit = (id: string) => {
-        router.push(`/teacher/courses/${courseId}/chapters/${id}`)
+        router.push(`/${params.storeId}/courses/list/${courseId}/chapters/${id}`)
     }
 
 
@@ -139,11 +138,11 @@ const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
                 )}
                 >
                     {!initialData.chapters.length && "No chapters"}
-                    {/* <ChaptersList
+                    <ChaptersList
                         onEdit={onEdit}
                         onReorder={onReorder}
                         items={initialData.chapters || []}
-                    /> */}
+                    />
                 </div>
             )}
 
