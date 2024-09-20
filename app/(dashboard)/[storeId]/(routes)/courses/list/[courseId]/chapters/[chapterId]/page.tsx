@@ -10,12 +10,13 @@ import ChapterTitleForm from "./_components/chapter-title-form";
 import ChapterDescriptionForm from "./_components/chapter-description-form";
 import ChapterAccessForm from "./_components/chapter-access-form";
 import ChapterVideoForm from "./_components/chapter-video-form";
+import { ChapterActions } from "./_components/chapter-actions-form";
 
 
 
 
 const ChapterIdPage = async (
-    { params }: { params: { storeId:string, courseId: string; chapterId: string } }
+    { params }: { params: { storeId: string, courseId: string; chapterId: string } }
 ) => {
     const { userId } = auth()
 
@@ -51,12 +52,19 @@ const ChapterIdPage = async (
 
     return (
         <>
-            {!chapter.isPublished && (
-                <Banner
-                    variant="warning"
-                    label="This chapter is unpublished. It will not be visible in the course"
-                />
-            )}
+            {chapter.isPublished ?
+                (
+                    <Banner
+                        variant="success"
+                        label="This chapter is now published."
+                    />
+                ) : (
+                    <Banner
+                        variant="warning"
+                        label="This chapter is unpublished. It will not be visible in the course"
+                    />
+                )
+            }
             <div className="p-6">
                 <div className="flex items-center justify-between">
                     <div className="w-full">
@@ -71,12 +79,12 @@ const ChapterIdPage = async (
                                 <h1 className="text-2xl font-medium">Chapter creation</h1>
                                 <span className="text-sm text-slate-700">Complete all fields {completionText} </span>
                             </div>
-                            {/* <ChapterActions
+                            <ChapterActions
                                 disabled={!isComplete}
                                 courseId={params.courseId}
                                 chapterId={params.chapterId}
                                 isPublished={chapter.isPublished}
-                            /> */}
+                            />
                         </div>
                     </div>
                 </div>
