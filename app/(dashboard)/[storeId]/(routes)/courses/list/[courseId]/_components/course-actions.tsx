@@ -10,14 +10,13 @@ import { Button } from "@/components/ui/button";
 import { ConfirmModal } from "@/components/modals/confirm-modal";
 
 
-interface ChapterActionsProps {
+interface CourseActionsProps {
     disabled: boolean;
     courseId: string;
-    chapterId: string;
     isPublished: boolean;
 }
 
-export const ChapterActions = ({ disabled, courseId, chapterId, isPublished }: ChapterActionsProps) => {
+export const CourseActions = ({ disabled, courseId, isPublished }: CourseActionsProps) => {
     const router = useRouter()
     const params= useParams()
     const [isLoading, setIsLoading] = useState(false)
@@ -27,15 +26,14 @@ export const ChapterActions = ({ disabled, courseId, chapterId, isPublished }: C
             setIsLoading(true)
 
             if (isPublished) {
-                await axios.patch(`/api/${params.storeId}/courses/${courseId}/chapters/${chapterId}/unpublish`)
-                toast.success("Chapter unpublished")
+                await axios.patch(`/api/${params.storeId}/courses/${courseId}/unpublish`)
+                toast.success("Course unpublished")
             } else {
-                await axios.patch(`/api/${params.storeId}/courses/${courseId}/chapters/${chapterId}/publish`)
-                toast.success("Chapter published")
+                await axios.patch(`/api/${params.storeId}/courses/${courseId}/publish`)
+                toast.success("Course published")
             }
 
             router.refresh()
-            router.push(`/${params.storeId}/courses/list/${courseId}`)
         } catch {
             toast.error("Something went wrong")
         } finally {
@@ -47,10 +45,9 @@ export const ChapterActions = ({ disabled, courseId, chapterId, isPublished }: C
         try {
             setIsLoading(true);
 
-            await axios.delete(`/api/${params.storeId}/courses/${courseId}/chapters/${chapterId}`);
-            toast.success("Chapter deleted")
-            router.refresh()
-            router.push(`/${params.storeId}/courses/list/${courseId}`)
+            await axios.delete(`/api/${params.storeId}/courses/${courseId}`);
+            toast.success("Course deleted")
+            router.push(`/${params.storeId}/courses/list`)
         } catch {
             toast.error("Something went wrong")
         } finally {
