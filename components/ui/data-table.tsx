@@ -64,7 +64,7 @@ export function DataTable<TData, TValue>({
                     }
                     className="max-w-sm"
                 />
-            </div>
+            </div> 
 
             <div className="rounded-md border">
                 <Table>

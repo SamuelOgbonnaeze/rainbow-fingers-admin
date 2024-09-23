@@ -1,24 +1,33 @@
-"use client"
+import prismadb from "@/lib/prismadb";
+import { redirect } from "next/navigation";
+import { auth } from "@clerk/nextjs";
 
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import { useParams } from "next/navigation";
+import CourseTable from "./_components/course-table";
 
-const List = () => {
-    const params = useParams()
-    const storeId = params.storeId
+const List = async () => {
+  const { userId } = auth();
 
 
-    return (
-        <div className=" p-3 w-full">
-            Tis is Listkm kjnijbbnkn bvb uiom nbkojnb v mnbvcfdftyui m nbv   jfdfjkkkkkjjkjbv njfduty ytf yot f  6r yofrfxc vc r tytfd  uodyfrdcv 8 rdcvjkvv   iyy rfdx vv itii rdfc
-            <Link href={`/${storeId}/courses/list/create`}>
-            <Button>
-                Create new course
-            </Button>
-        </Link>
-        </div >
-     );
-}
+  if (!userId) {
+    return redirect("/");
+  }
+
+  const courses = await prismadb.course.findMany({
+    where: {
+      userId,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
+
+  return (
+    <div className="p-3 w-full">
+      <CourseTable courses={courses} />
+    </div>
+
+  );
+};
 
 export default List;
