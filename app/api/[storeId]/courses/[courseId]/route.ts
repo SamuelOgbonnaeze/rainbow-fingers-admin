@@ -89,3 +89,29 @@ return NextResponse.json(deletedCourse)
     return new NextResponse("Internal Error", {status:500})
 }
 }
+
+export async function GET(
+    req: Request,
+    { params }: { params: { storeId: string, courseId: string } }
+) {
+    try {
+        const { userId } = auth()
+
+        if (!userId) {
+            return new NextResponse("Unauthorized", { status: 401 })
+        }
+
+        const course = await prismadb.course.findUnique({
+            where: {
+                userId,
+                id: params.courseId,
+                storeId: params.storeId,
+            },
+        }
+        )
+        return NextResponse.json(course)
+    } catch (error) {
+        console.log("[COURSE_ID_GET]", error);
+        return new NextResponse("Internal Error", { status: 500 })
+    }
+}

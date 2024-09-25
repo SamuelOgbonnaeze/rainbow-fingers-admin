@@ -5,6 +5,7 @@ import { auth } from "@clerk/nextjs";
 import CourseTable from "./_components/course-table";
 import { ApiList } from "@/components/ui/api-list";
 import { Heading } from "@/components/ui/heading";
+import { Separator } from "@/components/ui/separator";
 
 const List = async () => {
   const { userId } = auth();
@@ -35,6 +36,7 @@ const List = async () => {
           description="Api calls for courses"
           />
         </div>
+        <Separator />
         <ApiList
           entityName="courses"
           entityIdName="courseId"

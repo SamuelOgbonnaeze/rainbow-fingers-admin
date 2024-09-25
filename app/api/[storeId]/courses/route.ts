@@ -31,3 +31,31 @@ export async function POST(
         return new NextResponse("Internal Error", { status: 500 })
     }
 }
+
+
+export async function GET(
+    req: Request,
+    { params }: { params: { storeId: string } }
+) {
+    try {
+        const { userId } = auth();  
+
+        if (!userId) {
+            return new NextResponse("Unauthorized", { status: 401 })
+        }
+
+        const courses = await prismadb.course.findMany( {
+                where: {
+                    userId,
+                    storeId: params.storeId,
+                }
+            }
+        )
+
+        return NextResponse.json(courses)
+
+    } catch (error) {
+        console.log(["COURSES_GET"], error);
+        return new NextResponse("Internal Error", { status: 500 })
+    }
+}

@@ -37,9 +37,8 @@ const CourseTable = ({ courses }: CourseTableProps) => {
             </Button>
           </Link>
         </div>
-        <Separator />
       </div>
-
+      <Separator className="w-full" />
       <DataTable columns={columns} data={courses} />
 
     </div>
