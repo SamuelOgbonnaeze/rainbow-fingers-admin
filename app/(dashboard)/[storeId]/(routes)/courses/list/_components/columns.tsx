@@ -79,22 +79,15 @@ export const getColumns = (storeId: string): ColumnDef<Course>[] => {
       cell: ({ row }) => {
         const { id } = row.original;
         return (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-4 w-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <Link href={`/${storeId}/courses/list/${id}`}>
-                <DropdownMenuItem>
-                  <Pencil className="w-4 h-4 mr-2" />
-                  Edit
-                </DropdownMenuItem>
-              </Link>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <div className="flex items-center justify-between">
+            <Button className=" "  variant="outline">
+            <Link className="flex items-center justify-between" href={`/${storeId}/courses/list/${id}`}>
+              <Pencil className="w-4 h-4 mr-2" />
+              Edit
+            </Link>
+            </Button>
+           
+          </div>
         );
       },
     },
