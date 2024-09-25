@@ -8,6 +8,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Heading } from "@/components/ui/heading";
 import { Plus } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
 
 
 interface CourseTableProps {
@@ -26,8 +27,8 @@ const CourseTable = ({ courses }: CourseTableProps) => {
       <div className=" w-full p-6">
         <div className="flex items-center justify-between">
           <Heading
-            title="Course List"
-            description="Manage store brands"
+            title={`Courses (${courses.length})`}
+            description="Manage all learning courses "
           />
           <Link href={`/${storeId}/courses/list/create`}>
             <Button>
@@ -36,9 +37,11 @@ const CourseTable = ({ courses }: CourseTableProps) => {
             </Button>
           </Link>
         </div>
+        <Separator />
       </div>
 
       <DataTable columns={columns} data={courses} />
+
     </div>
   );
 };
