@@ -176,7 +176,7 @@ model Course {
 
   attachments Attachment[]
   chapters    Chapter[]
-  orderItem   OrderItem[]
+ orderItems OrderItem[]
 
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
