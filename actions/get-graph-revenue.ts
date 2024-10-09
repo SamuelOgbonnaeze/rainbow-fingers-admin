@@ -14,11 +14,12 @@ export const getGraphRevenue = async (storeId: string) => {
         include: {
             orderItems: {
                 include: {
-                    product: true
+                    product: true,
+                    course: true,
                 }
             }
         }
-    })
+    });
 
     const monthlyRevenue: { [key: number]: number } = {};
 
@@ -27,10 +28,14 @@ export const getGraphRevenue = async (storeId: string) => {
         let revenueForOrder = 0;
 
         for (const item of order.orderItems) {
-            revenueForOrder += item.product.price.toNumber();
+            // Check if product or course is null and access price safely
+            const productPrice = item.product?.price?.toNumber() || 0;
+            const coursePrice = item.course?.price || 0;  
+
+            revenueForOrder += productPrice + coursePrice;
         }
 
-        monthlyRevenue[month] = (monthlyRevenue[month] || 0) + revenueForOrder
+        monthlyRevenue[month] = (monthlyRevenue[month] || 0) + revenueForOrder;
     }
 
     const graphData: GraphData[] = [
@@ -49,8 +54,8 @@ export const getGraphRevenue = async (storeId: string) => {
     ];
 
     for (const month in monthlyRevenue) {
-        graphData[parseInt(month)].total = monthlyRevenue[parseInt(month)]
+        graphData[parseInt(month)].total = monthlyRevenue[parseInt(month)];
     }
 
-    return graphData
+    return graphData;
 }
