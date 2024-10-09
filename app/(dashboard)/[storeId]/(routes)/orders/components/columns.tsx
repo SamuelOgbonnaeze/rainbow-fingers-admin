@@ -10,6 +10,7 @@ export type OrderColumn = {
   isPaid: boolean
   totalPrice: string
   products: string
+  courses:string
   createdAt: string
 
 }
@@ -18,6 +19,10 @@ export const columns: ColumnDef<OrderColumn>[] = [
   {
     accessorKey: "products",
     header: "Products",
+  },
+  {
+    accessorKey: "courses",
+    header: "Courses",
   },
   {
     accessorKey: "phone",
