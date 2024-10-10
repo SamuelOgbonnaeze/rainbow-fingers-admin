@@ -17,11 +17,17 @@ export async function POST(
     { params }: { params: { storeId: string } }
 ) {
     try {
-        const { userId } = auth()
+        const { userId } = auth();
         const { courseIds, phonenumber, fullname } = await req.json();
 
-        if(!userId){
-            return new NextResponse("Unauthorized", {status:401})
+        // Log incoming data for debugging
+        console.log("User ID:", userId);
+        console.log("Course IDs:", courseIds);
+        console.log("Phone number:", phonenumber);
+        console.log("Full name:", fullname);
+
+        if (!userId) {
+            return new NextResponse("Unauthorized", { status: 401 });
         }
 
         if (!courseIds || courseIds.length === 0) {
@@ -37,24 +43,34 @@ export async function POST(
             },
         });
 
-        // console.log(courses)
+        console.log("Courses fetched:", courses);
 
-        // If courses are found
+        // If no valid courses are found
         if (!courses || courses.length === 0) {
             return new NextResponse("No valid courses found", { status: 404 });
         }
-        // create a purcase for user
+
+        // Create purchases for each course
         const purchases = await Promise.all(
             courseIds.map(async (courseId: string) => {
-                return await prismadb.purchase.create({
-                    data: {
-                        userId,
-                        courseId: courseId,  // Connect purchase with the course
-                    },
-                });
+                try {
+                    const purchase = await prismadb.purchase.create({
+                        data: {
+                            userId,
+                            courseId: courseId, // Connect purchase with the course
+                        },
+                    });
+                    console.log("Purchase created for courseId:", courseId, purchase);
+                    return purchase;
+                } catch (purchaseError) {
+                    console.error("Error creating purchase for courseId:", courseId, purchaseError);
+                    throw purchaseError;
+                }
             })
         );
-        console.log(purchases)
+
+        console.log("All purchases:", purchases);
+
         // Create the order
         const order = await prismadb.order.create({
             data: {
@@ -74,11 +90,11 @@ export async function POST(
             },
         });
 
-        // console.log(order)
+        console.log("Order created:", order);
 
-        return NextResponse.json({order, purchases}, { headers: corsHeaders });
+        return NextResponse.json({ order, purchases }, { headers: corsHeaders });
     } catch (error) {
-        console.log("COURSE_CHECKOUT_ERROR", error);
+        console.error("COURSE_CHECKOUT_ERROR", error);
         return new NextResponse("Internal_Error", { status: 400 });
     }
 }
