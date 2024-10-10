@@ -17,16 +17,16 @@ export async function POST(
     { params }: { params: { storeId: string } }
 ) {
     try {
-        const { userId } = auth();
-        const { courseIds, phonenumber, fullname } = await req.json();
+       
+        const { courseIds, phonenumber, fullname, user } = await req.json();
 
         // Log incoming data for debugging
-        console.log("User ID:", userId);
+        console.log("User ID:", user);
         console.log("Course IDs:", courseIds);
         console.log("Phone number:", phonenumber);
         console.log("Full name:", fullname);
 
-        if (!userId) {
+        if (!user) {
             return new NextResponse("Unauthorized", { status: 401 });
         }
 
@@ -56,7 +56,7 @@ export async function POST(
                 try {
                     const purchase = await prismadb.purchase.create({
                         data: {
-                            userId,
+                            userId:user,
                             courseId: courseId, // Connect purchase with the course
                         },
                     });
