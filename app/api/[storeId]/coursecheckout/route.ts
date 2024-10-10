@@ -31,7 +31,7 @@ export async function POST(
             },
         });
 
-        console.log(courses)
+        // console.log(courses)
 
         // If courses are found
         if (!courses || courses.length === 0) {
@@ -57,7 +57,7 @@ export async function POST(
             },
         });
 
-        console.log(order)
+        // console.log(order)
 
         return NextResponse.json(order, { headers: corsHeaders });
     } catch (error) {
