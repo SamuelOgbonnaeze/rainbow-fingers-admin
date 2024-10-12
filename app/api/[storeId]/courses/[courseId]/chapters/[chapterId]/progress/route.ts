@@ -1,5 +1,4 @@
 import prismadb from "@/lib/prismadb";
-import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server"
 
 
@@ -19,8 +18,8 @@ export async function PUT(
     {params}:{params:{courseId:string, chapterId:string}}
 ){
     try{
-        const { userId } = auth();
-        const { isComplete } = await req.json();
+      
+        const { isComplete, userId } = await req.json();
 
         if (!userId) {
             return new NextResponse("Unauthorized", { status: 401 })
