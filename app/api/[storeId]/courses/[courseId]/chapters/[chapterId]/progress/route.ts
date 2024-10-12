@@ -2,6 +2,18 @@ import prismadb from "@/lib/prismadb";
 import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server"
 
+
+
+const corsHeaders = {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "GET,POST,PUT,DELETE,OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization",
+}
+
+export async function OPTIONS() {
+    return NextResponse.json({}, { headers: corsHeaders })
+}
+
 export async function PUT(
     req:Request,
     {params}:{params:{courseId:string, chapterId:string}}
@@ -14,6 +26,7 @@ export async function PUT(
             return new NextResponse("Unauthorized", { status: 401 })
         }
 
+        console.log("isComplete", isComplete)
         const userProgress= await prismadb.userProgress.upsert({
             where:{
                 userId_chapterId:{
@@ -31,7 +44,7 @@ export async function PUT(
             }
         })
 
-        return NextResponse.json(userProgress);
+        return NextResponse.json({userProgress}, { headers: corsHeaders } );
 
     }catch(error){
         console.log("CHAPTER_ID_PROGRESS", error)

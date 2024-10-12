@@ -20,11 +20,6 @@ export async function POST(
        
         const { courseIds, phonenumber, fullname, user } = await req.json();
 
-        // Log incoming data for debugging
-        console.log("User ID:", user);
-        console.log("Course IDs:", courseIds);
-        console.log("Phone number:", phonenumber);
-        console.log("Full name:", fullname);
 
         if (!user) {
             return new NextResponse("Unauthorized", { status: 401 });
@@ -42,8 +37,6 @@ export async function POST(
                 },
             },
         });
-
-        console.log("Courses fetched:", courses);
 
         // If no valid courses are found
         if (!courses || courses.length === 0) {
@@ -69,7 +62,6 @@ export async function POST(
             })
         );
 
-        console.log("All purchases:", purchases);
 
         // Create the order
         const order = await prismadb.order.create({
@@ -90,7 +82,6 @@ export async function POST(
             },
         });
 
-        console.log("Order created:", order);
 
         return NextResponse.json({ order, purchases }, { headers: corsHeaders });
     } catch (error) {
