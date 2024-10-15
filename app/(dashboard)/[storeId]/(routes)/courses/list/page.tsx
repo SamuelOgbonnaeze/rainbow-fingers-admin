@@ -36,7 +36,7 @@ const List = async () => {
           description="Api calls for courses"
           />
         </div>
-        <Separator />
+        <Separator /> 
         <ApiList
           entityName="courses"
           entityIdName="courseId"
